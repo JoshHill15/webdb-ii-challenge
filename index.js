@@ -1,14 +1,7 @@
 const express = require("express")
 const server = express()
-const knex = require("knex")
-
-const db = knex({
-    client: 'sqlite3',
-    connection: {
-      filename: './data/car-dealer.db3'
-    },
-    useNullAsDefault: true
-  });
+server.use(express.json())
+const db = require("./dbConfig")
 
 
 server.get("/", (req,res) => {
@@ -29,8 +22,7 @@ server.post("/api/cars", (req,res) => {
     console.log("post request")
     db("cars").insert(body)
         .then(car => {
-            console.log("car",car)
-            
+            res.status(200).json(car)
         })
         .catch(err => {
             console.log(err)
